@@ -40,4 +40,19 @@ DCL
 
 drop database board;
 show 
+primary key 를 걸게되는 컬럼에 대해서는 unique not null제약조건 부여
+
+만약 not null 조건이 있다면 author_id가 데이터는 post에 생성불가
+author가 삭제될때 post에 데이터가 남아있으면 author 삭제불가
+author의 id가 수정될때 post에 데이터가 남아있으면 author 수정 불가
+삭제 수정에 대해서는 기본적으로 제약을 갖고 있으나 옵션을 줘서 변경가능
+
+테이블 생성 후 확인 SHOW TABLES
+컬럼 정보 확인 
+
+FOREIGN 키를 걸면 제약이걸림 
+
+주요제약조건(pk, fk) > index가 자동생성   주요제약조건을 걸면 인덱스가 자동생성된다.
+index는 조회성능을 위한 목차페이지
+show index from 테이블명; (인덱스확인)
 

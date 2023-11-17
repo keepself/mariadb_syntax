@@ -15,16 +15,7 @@ CREATE TABLE posts(id INT PRIMARY KEY, title VARCHAR(255), content VARCHAR(255),
 -- 테이블 생성문 조회
 
 SHOW CREATE TABLE posts;
-
-CREATE TABLE `posts` (
-   `id` int(11) NOT NULL,
-   `title` varchar(255) DEFAULT NULL,
-   `content` varchar(255) DEFAULT NULL,
-   `author_id` int(11) DEFAULT NULL,
-   PRIMARY KEY (`id`),
-   KEY `author_id` (`author_id`),
-   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `author` (`id`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+    o   
 
 --  테이블 제약조건 조회
 SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
@@ -41,7 +32,7 @@ CREATE TABLE 테이블이름
 ...
 [테이블제약조건]
 
-필드에 제약조건
+필드에 제약조건     
 해당필드에 적용할 제약조건을 선택적으로 지정가능
 
 테이블정보 변경
@@ -55,7 +46,7 @@ ALTER TABLE author ADD COLUMN ROLE VARCHAR(100) NOT NULL;
 필드 타입 변경(Modify)                                        < 타입변경은 기존데이터를 갈아야되서 어렵다 !>
 ALTER TABLE 테이블명 MODIFY COLUMN 컬럼명 타입 [제약조건];
 ALTER TABLE author MODIFY COLUMN name VARCHAR(100)NOT NULL;
-
+        
 컬럼 이름 변경 > content>contents
 ALTER TABLE 테이블명 CHANGE COLUMN 기존컬럼명 새로운컬럼명 타입[제약조건];   VARCHAR(--)
 
@@ -72,3 +63,23 @@ TRUNCATE TABLE 테이블이름
 IF EXISTS
 특정 객체 "(예: 데이터베이스나 테이블) 존재하는 경우에만 명령어를 실행
 DROP DATABASE 또는 TABLE IF EXISTS abc;
+
+=
+    select * from abc where name = 'honggildong';
+
+!= <>
+    select * from abc where name !='honggildong';
+<, <=, >, >=
+IS NULL, IS NOT NULL
+BETWEEN min ADN max
+    피연산자의 값이 min 값보다 크거나 max 작으면 참을 반환함.(이상,이하)
+
+IN(), NOT IN ()
+프로그래머스 SQL 문제풀이 (비교연산자(IS NULL) - 나이정보가 없는 회원 수 구하기)
+
+AND
+    &&도가능        
+OR 
+    ||
+NOT 
+    !
