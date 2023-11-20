@@ -296,3 +296,71 @@ now() ex) select now();
             RESTRICT 
                 fk로 잡은 테이블의 데이터가 남아 잇으면 fk대상 데이터 수정/삭제 불가
                 동작옵션을 주지 않으면 기본은 RESTRICT
+
+외래키 제약조건에서 ON update CASCADE등의 옵션
+
+on DELETE CASCADE 
+
+author 삭제시 post 같이 삭제
+수정시
+author id 수정불가
+restrict와 동일 
+REFERENCES author(id) ON DELETE SET NULL ON UPDATE SET NULL
+
+post 테이블에 on update CASCADE 설정
+    먼저 기존의 foreign key제약조건을 조회 후 삭제
+    select * from INFORMATION_SCHEMA_KEY_COLUMN_USAGE
+    WHERE TABLE_NAME = 'post'
+    ALTER TABLE post DROP FOREIGN KEY post_ibfk 1;
+    ALTER TABLE post DROP INDEX author_id;
+
+새롭게 제약조건 추가    
+ALTER TABLE post ADD CONSTRAINt FOREIGN KEY
+    (author_id) REFERENCES author(id) ON UPDATE CASCADE;
+    
+
+제약조건 default
+
+데이터를 입력할 때 해당 필드 값은 전달하지 않으면, 자동으로 설정된 기본값을 저장
+
+문법
+    CREATE TABLE test
+    (ID INT Name VARCHAR(30) DEFAULT 'ANONYMOUS')
+    
+    시간 세팅시 가장많이사용
+
+    ALTER TABLE author ADD Creat_at DATETIME DEFAULT
+    CURRENT_TIMESTAMP;  
+    ALTER TABLE post ADD creat_at DATETIME DEFAULT CURRENT_TIMESTAMP
+
+    흐름제어
+
+    CASE    
+
+        CASE values
+        WHEN[compare_value]THEN result =>if(value==compare_value1)
+
+        WHEN[compare_value]THEN result
+        ELSE result
+        END
+    CASE와 END로 이루어져있고, 원하는 조건내에 존재하지 않으면 ELSE문을 타고, ELSE문이 없을경우 null return
+
+select id, title, content,
+case author_id
+when 1 then 'first author'
+when 2 then 'second author'
+else 'ohters'
+end
+as author_type from post;
+
+흐름제어
+
+IF()
+    IF(a,b,c)
+    a는 조건, b는 참일경우 반환값, c는 거짓일경우 반환값
+    만약 a조건이 참이면 b를 반환하고, 거짓이면 c를 반환합니다
+    SELECT IF(0<1,'yes','no');
+
+        select id, title, contents, if(author_id=1, 'first author', other) from post;
+IFNULL(a,b)
+    만약 a의 값이 null이 아니면 a그 자체를 반환하고, NULL이면 b를 반환
