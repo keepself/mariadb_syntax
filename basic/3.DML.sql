@@ -1,6 +1,6 @@
 -- insert, select, update, delete 
 INSERT
-    테이블에 새로운 레코드를 추가
+    테이블에 새로운 레코드를 추가   
     INSERT INTO 테이블이름(name,emaill,password ..)VALUES
     EX) insert into author(id, name, email) values(1, 'kim','abc@naver.com');
     select* from author;  (*은 all의 의미)
@@ -163,8 +163,136 @@ CONVERT
     문자열을 날짜/시간으로 변환하는 데 사용
     CONVERT('2020-01-01',DATE);=>2020-01-01
 
-DATE_FORMAT
+DATE_FORMAT    프로그래머스 : 조건에맞는 도서
     DATE_FORMAT 함수는 날짜/시간 타입의 데이터를 지정된 형식의 문자열로 변환
     가장많이 사용
     DATE_FORMAT(DATE, FORMAT)
-        Ex)SELECT DATE_FORMAT('2020-01-01 17:12:00', '%Y-%M-%d'); =>2020-01-01
+        Ex)SELECT DATE_FORMAT('2020-01-01 17:12:00', '%Y-%M-%d'); =>2020-01-01          
+        
+CAST , CONVERT 사용시 유의사항
+
+최신버전 
+    CAST('123' as INT) 방식으로 int 사용가능
+    CAST('123' as signed)방식으로 signed(또는 unsigned) 사영가능
+구버전
+    CAST('123' as signed)방식으로 signed(또는 unsigned)만 사용가능
+
+여기서 signed는 부호있는 정수 즉 음수 양수 모두포함
+    ungsigned는 부호 없는 정수로서 0이상 양수를 의미
+
+날짜 데이터 조회하는 방식 중 많이 사용 하는 방식
+DATE_FORMAT(date, format)을 활용한 조회
+Y,mm, dd, H,i,s
+LIKE 를 사용하여 문자열 형식으로 조회
+SELECT * FROM post where created_time like '2023%';
+BETWEEN 연산자
+특정 날짜 범위를 지정하여 데이터를 검색
+WHERE created_time BETWEEN '2021-01-01' AND '2023-11-17'
+날짜 비교 연산자
+WHERE created_time >= '2021-01-01' AND created_time<= '2023-11-17'
+
+오늘날짜 관련 함수
+now() ex) select now();
+
+제약조건(CONSTRANINT)
+    데이터를 입력받을 때 실행되는 검사 귳칙 
+    CREATE 문으로 테이블을 생성 또는 ALTER 문으로 필드를 추가할 때 설정
+    종류
+        NOT NULL    
+        PRIMARY KEY> NOT NULL, UNIQUE
+
+제약조건 - NOT NULL
+    default값은 nullable
+
+    not null제약 조건이 설정된 필드느느 무조건 데이터를 가지고 있어야 한다
+    
+    문법 예제 
+        CREATE TABLE author 
+        (id INT NOT NULL,name VARCHAR(30),..)
+    ALTER문을 써서 post의 title을 not null 조건으로 바꿔보자
+            이미 NULL인 데이터 삭제
+    
+    AUTO_INCREMENT 키워드와 함께
+        새로운 레코드가 추가될 때마다 1씩 증가된 값을 저장
+        author, post 테이블의 id에 auto_increment로 바꿔보자
+        ALTER TABLE author modify 컬럼 컬럼이름 type 제약조건 AUTO_INCREMENT
+
+
+제약조건 - UNIQUE
+
+    UNIQUE 제약 조건을 설정하면, 해당 필드는 값이 UNIQUE해야함을 의미
+
+    방법 1
+        create TABLE 테이블이름
+        (필드명 필드타입 UNIQUE)
+
+    방법2 
+        CREATE TABLE 이름
+        (필드이름 필드타입,....[CONSTRANINT 제약조건이름] UNIQUE(필드이름));
+        UNIQUE 제약 조건을 별도로 정의하며, 선택적으로 제약 조건에 이름을 부여하는  방법
+
+    UNIQUE 제약 조건을 설정하면, 해당 필드는 자동으로 인덱스(INDEX)로 설정
+        show index from 테이블명;
+        index삭제 : ALTER TABLE 테이블이름 DROP INDEX 인덱스명.
+
+        UNIQUE ALTER문
+        방법
+            ALTER TABLE 테이블이름 modify COLUMN 필드이름 필드타입 UNIQUE
+        방법 2
+            ALTER TABLE 테이블이름 ADD CONSTRAINT 제약조건이름 UNIQUE(필드이름)  ALTER TABLE author ADD CONSTRAINT FAKER UNIQUE(title)
+제약조건 제거
+        ALTER TABLE 테이블명 DROP CONSTRAINT email;
+        ALTER TABLE 테이블명 DROP FOREIGN KEY 제약조건이름
+    
+        author 테이블 email에 unique 제약 조건 추가될
+        컬럼 제약조건으로 추가
+        제약조건 제거 및 index 제거
+        테이블 제약조건 추가형식으로 추가
+
+        제약조건제거
+        ALTER TABLE 테이블명 DROP CONSTRAINT email;
+        ALTER TABLE 테이블명 DROP FOREIGN KEY 제약조건이름
+
+        제약조건 SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME = 'author';
+        제약조건을 걸면 index가 자동생성된다 제약조건삭제시 index 삭제 = index삭제시 제약조건삭제
+
+
+        PRIMARY KEY 제약 조건을 가진 컬럼을 기본키(pk)라 함
+            NOT NULL과 UNIQUE 제약 조건의 특징을 모두 가진다
+
+        PRIMARY KEY 테이블당 오직 하나의 필드에만 설정
+            UNIQUE는 한 테이블의 여러 필드에 설정가능
+            NOT NULL도 물론 여러 필드에 설정 가능
+
+        없던 PK를 설정하기 위한 ALTER문 예제
+        방법 1
+            ALTER TABLE 테이블이름 
+            MODIFY COLUMN 필드이름 필드타입 PRIMARY KEY
+        방법 2(별도의 제약조건이름 옵션)
+        ALTER TABLE 테이블이름  
+        ADD CONSTRAINT 제약조건이름 PRIMARY KEY (필드이름)
+
+        제약조건 - FOREIGN KEY  
+        외래 키라고 부르며, 한 테이블을 다른 테이블과 연결해주는 역할
+            기준이 되는 다른 테이블의 내용을 참조해서 레코드가 입력
+            하나의 테이블을 다른 테이블에 의존하게 만드는 것
+            다른 테이블의 필드는 반드시 UNIQUE나 PRIMARY KEY 제약 조건이어야  함
+
+        문법 
+            CREATE TABLE 테이블이름
+            (필드이름 필드타입,....,[CONSTRAINT 제약조건이름]FOREIGN KEY(필드이름)REFERENCES 테이블이름(필드이름)[ON DELETE/UPDATE CASCADE])
+
+            
+        참조되는 테이블에서 데이터의 수정이나 삭제가 발생시 영향
+            ON DELETE   
+            ON UPDATE  
+            기본값은 delete, update 모두 restrict옵션이 걸려 있으므로, 변경하고 싶다면 각각 지정필요
+
+        위 설정시 동작옵션
+            CASCADE
+                참조되는 테이블에서 데이터를 삭제/수정하면 같이 삭제/수정
+            SET NULL
+                참조되는 테이블에서 데이터를 삭제/수정하면 데이터는 NULL로 변경
+            RESTRICT 
+                fk로 잡은 테이블의 데이터가 남아 잇으면 fk대상 데이터 수정/삭제 불가
+                동작옵션을 주지 않으면 기본은 RESTRICT

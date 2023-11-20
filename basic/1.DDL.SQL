@@ -51,7 +51,7 @@ ALTER TABLE author MODIFY COLUMN name VARCHAR(100)NOT NULL;
 ALTER TABLE 테이블명 CHANGE COLUMN 기존컬럼명 새로운컬럼명 타입[제약조건];   VARCHAR(--)
 
 컬럼 삭제 > test1컬럼삭제
-ALTER TABLE 테이블명 DROP COLUMN 컬럼명; 
+ALTER T ABLE 테이블명 DROP COLUMN 컬럼명; 
 
 테이블 삭제 
 DROP TABLE
@@ -62,7 +62,7 @@ TRUNCATE TABLE 테이블이름
 
 IF EXISTS
 특정 객체 "(예: 데이터베이스나 테이블) 존재하는 경우에만 명령어를 실행
-DROP DATABASE 또는 TABLE IF EXISTS abc;
+DROP DATABASE 또는 TABLE IF EXISTS abc;'
 
 =
     select * from abc where name = 'honggildong';
