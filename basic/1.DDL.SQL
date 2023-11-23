@@ -4,7 +4,7 @@ CREATE DATABASE board;
 USE board
 -- author 테이블 신규 생성
 -- 테이블 목록조회
-SHOW TABLES;
+SHOW TABLES;    
 -- 테이블 컬럼조회 
 DESCRIBE author;
 -- post 테이블 신규 생성

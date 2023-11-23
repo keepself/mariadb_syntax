@@ -241,9 +241,9 @@ now() ex) select now();
         방법 2
             ALTER TABLE 테이블이름 ADD CONSTRAINT 제약조건이름 UNIQUE(필드이름)  ALTER TABLE author ADD CONSTRAINT FAKER UNIQUE(title)
 제약조건 제거
-        ALTER TABLE 테이블명 DROP CONSTRAINT email;
+        ALTER TABLE 테이블명 DROP CONSTRAINT email;     
         ALTER TABLE 테이블명 DROP FOREIGN KEY 제약조건이름
-    
+
         author 테이블 email에 unique 제약 조건 추가될
         컬럼 제약조건으로 추가
         제약조건 제거 및 index 제거
