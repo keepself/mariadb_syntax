@@ -113,3 +113,97 @@ GRANT EXECUTE ON PROCEDURE 데이터베이스명.프로시저명 TO 'testuser'@'
 
 데이터베이스 dump
 mysqldump -u root -p --default-character-set=utf8mb4 board > dumpfile.sql
+
+
+도부이결다조
+
+원자값이 아닌 도메인 분해
+부분적 함수 종속 제약조건제거
+이행적 함수 종속 제약조건제거
+결정자이면서 후보키가 아닌것 제약조건제거
+다시 종속제거
+조인 종속성 이용
+
+함수적 종속성f(X)=y
+
+
+--DB 서버구성
+DB의 사용성에 문제가 생기지 않고록 하는 고가용성 확보를 위한 방안
+클러스터링
+    1대의 스토리지와 여러대의 서버운영
+    active/active , active/stanby  
+    VIP - virture IP
+
+레플리카   
+    n개의 (스토리지, 서버)를 운영 한쌍
+샤딩 
+    같은 테이블 스키마를 가진 데이터를 다수의 데이터베이스에 분산하여 저장하는 방법
+
+HA -> proxy(대리인), 로드밸런서(라운드로빈)
+nginx, reverse proxy용도로 많이 사용
+
+haproxy는 mssql 멀티서버 구성에서 많이 사용하는 프로그램
+    sudo apt-get insatll haproxy는
+
+HA 구성 절차
+    mariadb 서버 2대를 3306, 3307 포트로 실행
+    사용자의 엔드포인트로 사용하고자 하는 가상의 IP를 지정
+    각각 서버가 다른 IP에 존재할수 있으므로 단일 엔드포인트 필요    192.168.1.100라 가정
+    haproxy config파일 생성
+    ex) backend mysql_back
+        balace roundrobin
+        server mysql 192.168.1.101.3306
+
+        thread-task의 단위
+        process - 프로그램
+
+--redis 
+모든 key값 조회
+keys*
+키삭제
+DEL key명
+전체 key 삭제 flushdb
+
+
+list
+    redis 리스트는 간단한 메시징 큐로 사용될 수 있음
+    데이트추가 LPUSH RPUSH
+    데이터 추출 LPOP KEY , RPOP key
+    데이터 개수 LLEN key
+    member 조회 lrange key 명 
+    TTL(TIME TO LIVE)
+    만료시간 지정
+    expire my_claases_name 30
+    ttl[key]
+        남은 만료시간 확인
+
+
+SET관련
+    고유한 사용자 ID 목록 , 이벤트에서 한 번만 참여할 수 있는 사용자 관리 등에 사용 가능
+    set(집합)에 멤버 추가  
+    SADD myset member
+    set(집합)의 모든 멤버 반환
+    SMEMBERS myset
+    특정 멤버 삭제
+    SREM myset member1 member2
+    set의 멤버 개수 반환
+    scard myset
+
+zset(정렬된 집합)
+    주식 코인등의 실시간 시세 또는 게임등의 사용자의 점수나 순위를 관리하는데 사용 
+    기본문법
+        ZADD key score member   
+            score : 멤버를 정렬하는 데 사용되는 점수
+            member형식을 json형식으로도 가능
+                ex)zadd my_key 1 '{"hello":"world"}'
+        ZREM key member
+            특정키의 특정멤버 삭제
+        ZRANK key member
+            특정멤버의 위치 정보 반환
+        ZRANGE stock_prices 0 -1
+            score기준 오름차순 조회
+        ZREVRANGE stock_prices 0 -1
+            score기준 내림차순 조회 
+        INCR keyname
+        DECR keyname
+        키조회

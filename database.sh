@@ -9,7 +9,7 @@ DBMS에서 사용하는 프로그래밍 언어 > SQL
 CREAT READ UPDATE DELETE
 SQL 구문도 위의 목적에 맞게 크게 세가지로구분
 DDL DATE DEFINITION LANGUAGE
-    데이터베이스나 티블 등을 생성 삭제하거나 그 구조를 변경 
+    데이터베이스나 테이블 등을 생성 삭제하거나 그 구조를 변경 
     CREATE ALTER DROP
 DML
     Data Manipulation Language
